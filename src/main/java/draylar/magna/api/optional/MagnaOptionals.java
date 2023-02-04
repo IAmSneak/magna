@@ -42,7 +42,7 @@ public class MagnaOptionals {
         ToolMiningSpeedMultiplierCallback.EVENT.register((tool, state, player, currentMultiplier) -> {
             int gigantismLevel = EnchantmentHelper.getLevel(MagnaOptionals.CURSE_OF_GIGANTISM, tool);
             if (gigantismLevel > 0) {
-                return currentMultiplier * Magna.CONFIG.gigantismSpeedModifier * gigantismLevel;
+                return (float) (currentMultiplier * Magna.CONFIG.gigantismSpeedModifier * (1.0F/Math.pow(gigantismLevel,2)));
             }
 
             return currentMultiplier;
