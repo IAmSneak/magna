@@ -2,6 +2,7 @@ package draylar.magna.api.optional;
 
 import draylar.magna.api.event.ToolMiningSpeedMultiplierCallback;
 import draylar.magna.api.event.ToolRadiusCallback;
+import draylar.magna.config.MagnaConfig;
 import draylar.magna.enchantment.CurseOfGigantismEnchantment;
 import draylar.magna.item.ExcavatorItem;
 import draylar.magna.item.HammerItem;
@@ -39,8 +40,9 @@ public class MagnaOptionals {
 
         // setup 80% speed decrease while using the curse
         ToolMiningSpeedMultiplierCallback.EVENT.register((tool, state, player, currentMultiplier) -> {
-            if(EnchantmentHelper.getLevel(MagnaOptionals.CURSE_OF_GIGANTISM, tool) > 0) {
-                return currentMultiplier * 0.2f;
+            int gigantismLevel = EnchantmentHelper.getLevel(MagnaOptionals.CURSE_OF_GIGANTISM, tool);
+            if (gigantismLevel > 0) {
+                return (float) (currentMultiplier * MagnaConfig.getInstance().gigantismSpeedModifier * (1.0F/Math.pow(gigantismLevel,2)));
             }
 
             return currentMultiplier;
@@ -48,8 +50,9 @@ public class MagnaOptionals {
 
         // setup radius increase while the curse is applied to a tool
         ToolRadiusCallback.EVENT.register((tool, currentRadius) -> {
-            if(EnchantmentHelper.getLevel(MagnaOptionals.CURSE_OF_GIGANTISM, tool) > 0) {
-                return currentRadius + 1;
+            int gigantismLevel = EnchantmentHelper.getLevel(MagnaOptionals.CURSE_OF_GIGANTISM, tool);
+            if (gigantismLevel > 0) {
+                return currentRadius + gigantismLevel;
             }
 
             return currentRadius;
